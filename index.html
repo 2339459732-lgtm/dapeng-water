@@ -368,9 +368,14 @@
         };
         animateCursor();
 
-        document.querySelectorAll('a, button, .bento-box').forEach(el => {
-            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        // 修复的全局交互代理（解决弹窗内点击不同步问题）
+        document.addEventListener('mouseover', (e) => {
+            const target = e.target.closest('a, button, .bento-box, select, input, .ac-2');
+            if (target) cursor.classList.add('hover');
+        });
+        document.addEventListener('mouseout', (e) => {
+            const target = e.target.closest('a, button, .bento-box, select, input, .ac-2');
+            if (target) cursor.classList.remove('hover');
         });
 
         window.addEventListener('scroll', () => {
